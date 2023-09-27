@@ -1,45 +1,21 @@
-def check_leap_year(year):
-    return year % 400==0 or (year%4==0 and year % 100!=0) 
+from utils.dates import start_day_number, get_week_day_name, days_in_month
 
 
-def days_in_month(month,year):
-    if month==2:
-        return 28 + int(check_leap_year(year))
-    
-    elif(month<8 and month%2!=0) or (month>=8 and month%2==0):
-        return 31
-    else:
-        return 30
-        
-
-def get_week_day_name(index):
-    if(index == 0): return 'Sunday'
-    if(index == 1): return 'Monday'
-    if(index == 2): return 'Tuesday'
-    if(index == 3): return 'Wednesday'
-    if(index == 4): return 'Thursday'
-    if(index == 5): return 'Friday'
-    if(index == 6): return 'Saturday'
-
-
-def date_value(day,month,year):
-    days_elapsed = 0
-    y = year - 1
-    days_elapsed = y*365 + y//4 - y//100 + y//400
-
-    m = 1
-    while(m<month):
-        days_elapsed += days_in_month(m, year)
-        m+=1
-    days_elapsed +=day
-
-    return days_elapsed
-
-
-def week_day_name(dd,mm,yy):
-    ref_date = date_value(1,1,1978)
-    inpUt_date = date_value(dd,mm,yy)
-    diff =  (inpUt_date - ref_date)%7
-    return get_week_day_name(diff)
-
-print(week_day_name(21,9,1960))
+def print_month_calendar(mm,yy):
+    start_day =  start_day_number(1,mm,yy)
+    month_days = days_in_month(mm,yy) 
+    i = 1
+    print('|',end='')
+    for x in range(7):
+        print(get_week_day_name(x)[0:3],end='\t|')
+    print()
+    while i < month_days:
+        print('|', end='')
+        for col in range(7):
+            if i==1 and col< start_day:
+                print('\t',end='')
+            elif(i<=month_days):
+                print(f'{str(i)}\t', end='')
+                i+=1
+            print('|',end='')
+        print()
