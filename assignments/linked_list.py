@@ -6,28 +6,28 @@ class Node:
 
 class LinkedList:
     def __init__(self):
-        self.head = None
-        self.tail = None
+        self.__head = None
+        self.__tail = None
         self.len = 0
 
     def append(self, value):
         new_node = Node(value)
-        if self.head == None and self.tail==None:
-            self.head = new_node
+        if self.__head == None and self.__tail==None:
+            self.__head = new_node
 
-        elif self.head == self.tail:
-            self.head.next = new_node
+        elif self.__head == self.__tail:
+            self.__head.next = new_node
 
         else:
-            self.tail.next = new_node
+            self.__tail.next = new_node
 
-        self.tail = new_node
+        self.__tail = new_node
         self.len += 1
 
 
     def insert(self, data, pos):
         new_node = Node(data)
-        node = self.head if pos==0 else self.get(pos-1)
+        node = self.__head if pos==0 else self.get(pos-1)
 
         if node:
             new_node.next = node.next
@@ -40,7 +40,7 @@ class LinkedList:
             return data.data
         
     def get(self, pos):
-        temp = self.head
+        temp = self.__head
         count = 0
         while temp != None:
             if(count==pos):
@@ -56,7 +56,7 @@ class LinkedList:
 
 
     def size(self):
-        temp = self.head
+        temp = self.__head
         count = 0
         while temp != None:
             temp = temp.next
@@ -64,7 +64,7 @@ class LinkedList:
         return count 
 
     def print_list(self):
-        temp = self.head
+        temp = self.__head
         while temp != None:
             print(temp.data, end=' ')
             temp = temp.next
@@ -76,12 +76,12 @@ class LinkedList:
         print(f'\nSize {self.len}')
 
     def remove(self, pos):
-        temp = self.head
+        temp = self.__head
         deleted_node = None
         count = 0
         if(pos == 0):
-            deleted_node = self.head
-            self.head = self.head.next
+            deleted_node = self.__head
+            self.__head = self.__head.next
 
         elif pos<self.len:
 
@@ -106,7 +106,7 @@ class LinkedList:
         
     
     def clear(self):
-        temp = self.head
+        temp = self.__head
         while temp != None:
             self.remove(0)
             temp = temp.next

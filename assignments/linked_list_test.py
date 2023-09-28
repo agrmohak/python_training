@@ -6,7 +6,7 @@ def main():
 
 
     for x in range(10, 200, 10):
-    list.append(x)
+        list.append(x)
 
     list.info()
 
