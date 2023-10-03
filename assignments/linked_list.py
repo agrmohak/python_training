@@ -63,13 +63,6 @@ class LinkedList:
             count+=1
         return count 
 
-    def print_list(self):
-        temp = self.__head
-        while temp != None:
-            print(temp.data, end=' ')
-            temp = temp.next
-        print()
-
     def info(self):
         print('List elements : ', end='')
         self.print_list()
@@ -110,3 +103,28 @@ class LinkedList:
         while temp != None:
             self.remove(0)
             temp = temp.next
+
+    def count(self, data):
+        temp = self.__head
+        count = 0
+        while temp != None:
+            if(temp.data == data):
+                count += 1
+            temp = temp.next
+        return count
+    
+    def __str__(self):
+        output = '('
+        temp = self.__head
+        while temp != None:
+            output += str(temp.data) + ','
+            temp = temp.next
+        print(')')
+        
+    def __contains__(self, data):
+        temp = self.__head
+        while temp != None:
+            if temp.data == data:
+                return True
+            temp = temp.next
+        return False
