@@ -119,8 +119,9 @@ class LinkedList:
         while temp != None:
             output += str(temp.data) + ','
             temp = temp.next
-        print(')')
-        
+        output +=')'
+        return output
+
     def __contains__(self, data):
         temp = self.__head
         while temp != None:
