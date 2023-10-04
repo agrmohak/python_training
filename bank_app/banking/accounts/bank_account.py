@@ -14,6 +14,8 @@ class BankAccount:
             
     def check_balance(self):
         return self._balance
+    def _max_withdrawal_limit(self):
+        raise Exception('Nm rule present')
     
     def is_valid_transact_amount(self, amount):
         if(amount > 0):
@@ -21,12 +23,12 @@ class BankAccount:
         raise ex.InvalidAmount
     
     def withdraw(self, amount, password):
-        if self._balance <0 :
-            raise ex.InsufficientFunds
         self.is_valid_transact_amount(amount)
         self.authenticate(password)
-        self._balance -= amount
-        return True
+        if amount < self._max_withdrawal_limit():
+            self._balance -= amount
+            return True
+        raise ex.InsufficientFunds
         
     
     def deposit(self, amount):
@@ -52,12 +54,9 @@ class SavingsAccount(BankAccount):
         self._min_balance = min_balance
     
     
-    def get_max_withdrawal_amount(self):
+    def _max_withdrawal_limit(self):
         return self._balance - self._min_balance
     
-    def withdraw(self, amount, password):
-        if amount < self.get_max_withdrawal_amount(): 
-            return super().withdraw(amount, password)
     
 
 class CurrentAccount(BankAccount):
@@ -65,6 +64,9 @@ class CurrentAccount(BankAccount):
         super().__init__(account_number, name, password, balance)
         self._interest_rate = 0
         self._min_balance = 0
+
+    def _max_withdrawal_limit(self):
+        return self._balance
     
 class OverDraftAccount(BankAccount):
     def __init__(self, account_number, name, password, balance):
@@ -79,19 +81,17 @@ class OverDraftAccount(BankAccount):
         limit = self._max_balance / 10
         return limit
     
-    def get_max_withdrawal_amount(self):
+    def _max_withdrawal_limit(self):
         return self._balance + self.get_od_limit()
     
     def calculate_od_fee(self, amount):
         return (amount - self._balance)/100
     
     def withdraw(self, amount, password):
-        if(amount < self.get_max_withdrawal_amount()):
-            od_fee = self.calculate_od_fee(amount)
-            super().withdraw(amount, password)
-            super().withdraw(od_fee, password)
-            return True
-        raise ex.InvalidAmount
+        super().withdraw(amount, password)
+        od_fee = self.calculate_od_fee(amount)
+        super().withdraw(od_fee, password)
+        return True
     
     def update_max_balance(self):
         if self._balance > self._max_balance:

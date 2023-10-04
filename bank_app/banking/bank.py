@@ -28,9 +28,12 @@ class Bank:
     def close_account(self, account_num, password):
         account = self.get_account(account_num)
         if account.authenticate(password):
-            balance = account._balance
-            self.__accounts.remove(account)
-            return balance
+            if balance < 0:
+                raise ex.BalanceDeficit
+            else:
+                balance = account._balance
+                self.__accounts.remove(account)
+                return balance
 
     def authenticate(self, account_num, password):
         account = self.get_account(account_num)

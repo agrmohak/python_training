@@ -9,3 +9,6 @@ class AccountDoesNotExist(BaseException):
 
 class InsufficientFunds(BaseException):
     pass
+
+class BalanceDeficit:
+    pass
